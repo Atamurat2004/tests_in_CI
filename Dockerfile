@@ -9,10 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
+COPY app.py wsgi.py .
 
 EXPOSE 3000
 
-USER nobody
-
-CMD ["gunicorn", "--bind", "0.0.0.0:3000", "--factory", "app:create_app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:3000", "--workers", "1", "wsgi:application"]
